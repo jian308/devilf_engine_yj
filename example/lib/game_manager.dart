@@ -1,5 +1,5 @@
 
-import 'package:devilf_engine/game/df_game_widget.dart';
+import 'package:devilf_engine_yj/game/df_game_widget.dart';
 
 /// 游戏管理器
 class GameManager {

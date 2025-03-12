@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
-import 'package:devilf_engine/core/df_position.dart';
-import 'package:devilf_engine/core/df_size.dart';
-import 'package:devilf_engine/sprite/df_sprite.dart';
+import 'package:devilf_engine_yj/core/df_position.dart';
+import 'package:devilf_engine_yj/core/df_size.dart';
+import 'package:devilf_engine_yj/sprite/df_sprite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

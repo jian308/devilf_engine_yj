@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:devilf_engine/game/df_animation.dart';
+import 'package:devilf_engine_yj/game/df_animation.dart';
 import 'package:flutter/material.dart';
 
 /// 摇杆控制

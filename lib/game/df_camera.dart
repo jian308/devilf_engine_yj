@@ -1,6 +1,6 @@
-import 'package:devilf_engine/core/df_offset.dart';
-import 'package:devilf_engine/core/df_rect.dart';
-import 'package:devilf_engine/sprite/df_sprite.dart';
+import 'package:devilf_engine_yj/core/df_offset.dart';
+import 'package:devilf_engine_yj/core/df_rect.dart';
+import 'package:devilf_engine_yj/sprite/df_sprite.dart';
 
 /// 摄像机
 class DFCamera {

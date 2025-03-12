@@ -1,9 +1,9 @@
 import 'dart:ui';
-import 'package:devilf_engine/core/df_rect.dart';
-import 'package:devilf_engine/core/df_shape.dart';
+import 'package:devilf_engine_yj/core/df_rect.dart';
+import 'package:devilf_engine_yj/core/df_shape.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:devilf_engine/core/df_position.dart';
-import 'package:devilf_engine/core/df_size.dart';
+import 'package:devilf_engine_yj/core/df_position.dart';
+import 'package:devilf_engine_yj/core/df_size.dart';
 
 /// 基础精灵类
 class DFSprite {

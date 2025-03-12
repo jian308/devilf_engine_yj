@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:devilf_engine/core/df_position.dart';
+import 'package:devilf_engine_yj/core/df_position.dart';
 
 /// A*算法类
 class DFAStar {

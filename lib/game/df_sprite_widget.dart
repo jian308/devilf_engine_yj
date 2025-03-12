@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:devilf_engine/sprite/df_sprite.dart';
+import 'package:devilf_engine_yj/sprite/df_sprite.dart';
 import 'package:flutter/material.dart';
 import 'df_camera.dart';
 import 'df_sprite_render_box.dart';

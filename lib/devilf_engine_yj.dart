@@ -1,4 +1,4 @@
-library devilf_engine;
+library devilf_engine_yj;
 
 /// 引擎配置
 class DFConfig {

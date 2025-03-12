@@ -7,8 +7,7 @@ import 'package:flutter/widgets.dart';
 
 /// 音效播放
 class DFAudio {
-
-  static String prefix = "assets/audio/";
+  static String prefix = "audio/";
 
   /// 音频类
   static AudioCache audioCache = AudioCache(prefix: prefix);
@@ -21,7 +20,7 @@ class DFAudio {
 
   /// 开始播放音效序列
   void startPlay(List<String> files, {stepTime = 400, loop = false}) {
-    if(files.length == 0){
+    if (files.isEmpty) {
       return;
     }
     count = 0;
@@ -53,26 +52,34 @@ class DFAudio {
   }
 
   /// 背景音乐
-  static BackgroundMusic backgroundMusic = BackgroundMusic(audioCache: audioCache);
+  static BackgroundMusic backgroundMusic = BackgroundMusic(
+    audioCache: audioCache,
+  );
 
   /// 播放短音频
-  static Future<AudioPlayer> play(String file, {double volume = 1.0}) {
-    return audioCache.play(file, volume: volume, mode: PlayerMode.LOW_LATENCY);
+  static Future<void> play(String file, {double volume = 1.0}) {
+    final player = AudioPlayer();
+    return player.play(AssetSource(prefix+file), volume: volume);
   }
 
   /// 循环播放
-  static Future<AudioPlayer> loop(String file, {double volume = 1.0}) {
-    return audioCache.loop(file, volume: volume, mode: PlayerMode.LOW_LATENCY);
+  static Future<void> loop(String file, {double volume = 1.0}) async {
+    final player = AudioPlayer();
+    await player.setReleaseMode(ReleaseMode.loop);
+    return player.play(AssetSource(prefix+file), volume: volume);
   }
 
   /// 播放长音频
-  static Future<AudioPlayer> playLongAudio(String file, {double volume = 1.0}) {
-    return audioCache.play(file, volume: volume);
+  static Future<void> playLongAudio(String file, {double volume = 1.0}) {
+    final player = AudioPlayer();
+    return player.play(AssetSource(prefix+file), volume: volume);
   }
 
   /// 循环播放长音频
-  static Future<AudioPlayer> loopLongAudio(String file, {double volume = 1.0}) {
-    return audioCache.loop(file, volume: volume);
+  static Future<void> loopLongAudio(String file, {double volume = 1.0}) async {
+    final player = AudioPlayer();
+    await player.setReleaseMode(ReleaseMode.loop);
+    return player.play(AssetSource(prefix+file), volume: volume);
   }
 }
 
@@ -80,27 +87,29 @@ class DFAudio {
 class BackgroundMusic extends WidgetsBindingObserver {
   bool _isRegistered = false;
   late AudioCache audioCache;
-  AudioPlayer? audioPlayer;
+  AudioPlayer audioPlayer = AudioPlayer();
   bool isPlaying = false;
 
-  BackgroundMusic({AudioCache? audioCache}) : audioCache = audioCache ?? AudioCache();
+  BackgroundMusic({AudioCache? audioCache})
+    : audioCache = audioCache ?? AudioCache();
 
   void initialize() {
     if (_isRegistered) {
       return;
     }
     _isRegistered = true;
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   Future<void> play(String filename, {double volume = 1}) async {
     final currentPlayer = audioPlayer;
-    if (currentPlayer != null && currentPlayer.state != PlayerState.STOPPED) {
+    if (currentPlayer.state != PlayerState.stopped) {
       currentPlayer.stop();
     }
 
     isPlaying = true;
-    audioPlayer = await audioCache.loop(filename, volume: volume);
+    await audioPlayer.setReleaseMode(ReleaseMode.loop);
+    await audioPlayer.play(AssetSource(filename), volume: volume);
   }
 
   Future<Uri> load(String file) => audioCache.load(file);
@@ -109,47 +118,41 @@ class BackgroundMusic extends WidgetsBindingObserver {
 
   Future<List<Uri>> loadAll(List<String> files) => audioCache.loadAll(files);
 
-  void clear(Uri file) => audioCache.clear(file);
+  void clear(Uri file) => audioCache.clear(file.path);
 
   void clearAll() => audioCache.clearAll();
 
   Future<void> stop() async {
     isPlaying = false;
-    if (audioPlayer != null) {
-      await audioPlayer!.stop();
-    }
+    await audioPlayer.stop();
   }
 
   Future<void> resume() async {
-    if (audioPlayer != null) {
-      isPlaying = true;
-      await audioPlayer!.resume();
-    }
+    isPlaying = true;
+    await audioPlayer.resume();
   }
 
   Future<void> pause() async {
-    if (audioPlayer != null) {
-      isPlaying = false;
-      await audioPlayer!.pause();
-    }
+    isPlaying = false;
+    await audioPlayer.pause();
   }
 
   void dispose() {
     if (!_isRegistered) {
       return;
     }
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _isRegistered = false;
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (isPlaying && audioPlayer?.state == PlayerState.PAUSED) {
-        audioPlayer?.resume();
+      if (isPlaying && audioPlayer.state == PlayerState.paused) {
+        audioPlayer.resume();
       }
     } else {
-      audioPlayer?.pause();
+      audioPlayer.pause();
     }
   }
 }
